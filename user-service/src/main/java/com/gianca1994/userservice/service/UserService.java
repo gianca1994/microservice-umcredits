@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public List<Subject> getSubjects(int userId) {
-        List<Subject> subjects = restTemplate.getForObject("http://localhost:9002/subject/byuser/" + userId, List.class);
+        List<Subject> subjects = restTemplate.getForObject("http://subject-service/subject/byuser/" + userId, List.class);
         return subjects;
 
     }
