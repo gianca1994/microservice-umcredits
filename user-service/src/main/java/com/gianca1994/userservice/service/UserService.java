@@ -31,33 +31,33 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public User save(User user){
+    public User save(User user) {
         User newUser = userRepository.save(user);
         return newUser;
     }
 
-    public List<Subject> getSubjects(int userId){
-        List<Subject> subjects = restTemplate.getForObject("http://localhost:8002/subject/byuser/" + userId, List.class);
+    public List<Subject> getSubjects(int userId) {
+        List<Subject> subjects = restTemplate.getForObject("http://localhost:9002/subject/byuser/" + userId, List.class);
         return subjects;
 
     }
 
-    public Subject saveSubject(int userId, Subject subject){
+    public Subject saveSubject(int userId, Subject subject) {
         subject.setUserId(userId);
         Subject newSubject = subjectFeignClient.save(subject);
         return newSubject;
     }
 
-    public Map<String, Object> getUserSubjects(int userId){
+    public Map<String, Object> getUserSubjects(int userId) {
         Map<String, Object> result = new HashMap<>();
         User user = userRepository.findById(userId).orElse(null);
-        if(user == null) {
-          result.put("Message", "El usuario no existe");
-          return result;
+        if (user == null) {
+            result.put("Message", "El usuario no existe");
+            return result;
         }
         result.put("User", user);
         List<Subject> subjects = subjectFeignClient.getSubjects(userId);
-        if(subjects.isEmpty())
+        if (subjects.isEmpty())
             result.put("Subject", "El usuario no tiene materias");
         else
             result.put("Subjects", subjects);
